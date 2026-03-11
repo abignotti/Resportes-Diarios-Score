@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(pip install:*)",
+      "Bash(python update_report.py)",
+      "Bash(pip3 install:*)"
+    ]
+  }
+}
