@@ -1,75 +1,44 @@
-import { supabase, SKU_NOMBRES, type StockRow } from '@/lib/supabase'
-import StockTable from './components/StockTable'
-import KPICards from './components/KPICards'
-import Filters from './components/Filters'
+import { createClient } from '@supabase/supabase-js'
+import type { StockRow } from '@/lib/types'
+import Dashboard from './components/Dashboard'
 
-async function getStock(cadena?: string, supervisor?: string, soloAlertas?: boolean) {
-  let query = supabase
+async function fetchLatestStock(): Promise<StockRow[]> {
+  const client = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  // 1. Obtener la fecha más reciente disponible
+  const { data: latest } = await client
     .from('stock')
-    .select('*')
-    .order('cadena')
-    .order('local_id')
-    .order('articulo_id')
-    .limit(2000)
+    .select('dia')
+    .order('dia', { ascending: false })
+    .limit(1)
+    .single()
 
-  if (cadena && cadena !== 'TODAS') query = query.eq('cadena', cadena)
-  if (supervisor && supervisor !== 'TODOS') query = query.eq('supervisor', supervisor)
-  if (soloAlertas) query = query.or('alerta_agencia.eq.1,alerta_reposicion.eq.1')
+  if (!latest?.dia) return []
+  const fechaMax = latest.dia
 
-  const { data, error } = await query
-  if (error) throw new Error(error.message)
-  return (data ?? []) as StockRow[]
+  // 2. Cargar SOLO los registros de esa fecha (paginado por si hay > 1000)
+  const all: StockRow[] = []
+  let offset = 0
+  while (true) {
+    const { data, error } = await client
+      .from('stock')
+      .select('*')
+      .eq('dia', fechaMax)
+      .range(offset, offset + 999)
+      .order('local_id')
+    if (error || !data?.length) break
+    all.push(...data)
+    if (data.length < 1000) break
+    offset += 1000
+  }
+
+  return all
 }
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ cadena?: string; supervisor?: string; alertas?: string }>
-}) {
-  const params = await searchParams
-  const cadena     = params.cadena
-  const supervisor = params.supervisor
-  const soloAlertas = params.alertas === '1'
-
-  const stock = await getStock(cadena, supervisor, soloAlertas)
-
-  const totalSalas    = new Set(stock.map(r => r.local_id)).size
-  const alertasAgencia = stock.filter(r => r.alerta_agencia === 1).length
-  const alertasRepo    = stock.filter(r => r.alerta_reposicion === 1).length
-  const sinVentaAyer   = stock.filter(r => (r.d0 ?? 0) === 0).length
-
-  return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-slate-800">⚡ Score Energy</h1>
-          <p className="text-sm text-slate-500">Dashboard Cencosud — Stock & Ventas</p>
-        </div>
-        <div className="text-sm text-slate-400">
-          Actualizado: {new Date().toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-        </div>
-      </header>
-
-      <main className="px-6 py-6 max-w-screen-2xl mx-auto space-y-6">
-        {/* KPIs */}
-        <KPICards
-          totalSalas={totalSalas}
-          alertasAgencia={alertasAgencia}
-          alertasRepo={alertasRepo}
-          sinVentaAyer={sinVentaAyer}
-        />
-
-        {/* Filtros */}
-        <Filters
-          cadenaActual={cadena ?? 'TODAS'}
-          supervisorActual={supervisor ?? 'TODOS'}
-          soloAlertas={soloAlertas}
-        />
-
-        {/* Tabla */}
-        <StockTable rows={stock} skuNombres={SKU_NOMBRES} />
-      </main>
-    </div>
-  )
+export default async function Page() {
+  const rows = await fetchLatestStock()
+  return <Dashboard initialRows={rows} />
 }
