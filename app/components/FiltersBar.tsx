@@ -1,8 +1,12 @@
 'use client'
 import type { Filters } from '@/lib/types'
-import { SABOR_GRUPOS } from '@/lib/config'
+import { SABOR_GRUPOS, ALL_CADENAS, CHAIN_GROUPS } from '@/lib/config'
 
-const CADENAS = ['JUMBO', 'SANTA ISABEL', 'SPID']
+const CADENAS = ALL_CADENAS
+const GRUPO_LABELS: Record<string, string> = {
+  CENCOSUD: 'Cencosud',
+  WALMART: 'Walmart',
+}
 const SUPERVISORES = ['ALVARO', 'ELIO']
 const SABORES = Object.keys(SABOR_GRUPOS)
 
@@ -22,22 +26,38 @@ export default function FiltersBar({ filters, onChange, lastDate }: Props) {
     <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
       <div className="flex flex-wrap gap-4 items-start">
 
-        {/* Cadena */}
+        {/* Cadena — agrupadas por holding */}
         <div>
           <p className="text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Cadena</p>
-          <div className="flex gap-1.5 flex-wrap">
+          <div className="flex gap-1.5 flex-wrap items-center">
             <button
               onClick={() => onChange({ ...filters, cadenas: [] })}
               className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors
                 ${filters.cadenas.length === 0 ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-300 hover:border-slate-500'}`}
             >Todas</button>
-            {CADENAS.map(c => (
-              <button key={c}
-                onClick={() => onChange({ ...filters, cadenas: toggle(filters.cadenas, c) })}
-                className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors
-                  ${filters.cadenas.includes(c) ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-300 hover:border-blue-400'}`}
-              >{c}</button>
-            ))}
+            {Object.entries(CHAIN_GROUPS).map(([grupo, cadenas]) => {
+              const allSelected = cadenas.every(c => filters.cadenas.includes(c))
+              return (
+                <span key={grupo} className="inline-flex items-center gap-1">
+                  <button
+                    onClick={() => {
+                      const without = filters.cadenas.filter(c => !cadenas.includes(c))
+                      onChange({ ...filters, cadenas: allSelected ? without : [...without, ...cadenas] })
+                    }}
+                    className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors
+                      ${allSelected ? 'bg-blue-600 text-white border-blue-600' : 'bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-400'}`}
+                  >{GRUPO_LABELS[grupo] ?? grupo}</button>
+                  {cadenas.map(c => (
+                    <button key={c}
+                      onClick={() => onChange({ ...filters, cadenas: toggle(filters.cadenas, c) })}
+                      className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors
+                        ${filters.cadenas.includes(c) ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-300 hover:border-blue-400'}`}
+                    >{c}</button>
+                  ))}
+                  <span className="w-px h-4 bg-slate-200 mx-1" />
+                </span>
+              )
+            })}
           </div>
         </div>
 

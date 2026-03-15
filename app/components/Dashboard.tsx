@@ -66,7 +66,7 @@ export default function Dashboard({ initialRows }: Props) {
             </div>
             <div>
               <h1 className="text-base font-bold text-slate-900 leading-none">Score Energy</h1>
-              <p className="text-xs text-slate-400">Reporte diario Cencosud</p>
+              <p className="text-xs text-slate-400">Dashboard operacional</p>
             </div>
           </div>
           <div className="flex items-center gap-3 text-xs text-slate-400">
