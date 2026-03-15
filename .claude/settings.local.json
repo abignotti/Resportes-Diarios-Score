@@ -4,7 +4,27 @@
       "Bash(python3:*)",
       "Bash(pip install:*)",
       "Bash(python update_report.py)",
-      "Bash(pip3 install:*)"
+      "Bash(pip3 install:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X POST \"https://zgbtgwretevwhymrpepv.supabase.co/rest/v1/rpc/version\" -H \"apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnYnRnd3JldGV2d2h5bXJwZXB2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzI3NjE0MCwiZXhwIjoyMDg4ODUyMTQwfQ.iWle_HFz0GzXqBbsKmVZjeO7pUPhvZOJOtQeFAZgGOg\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnYnRnd3JldGV2d2h5bXJwZXB2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzI3NjE0MCwiZXhwIjoyMDg4ODUyMTQwfQ.iWle_HFz0GzXqBbsKmVZjeO7pUPhvZOJOtQeFAZgGOg\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://zgbtgwretevwhymrpepv.supabase.co/rest/v1/\" -H \"apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnYnRnd3JldGV2d2h5bXJwZXB2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzI3NjE0MCwiZXhwIjoyMDg4ODUyMTQwfQ.iWle_HFz0GzXqBbsKmVZjeO7pUPhvZOJOtQeFAZgGOg\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnYnRnd3JldGV2d2h5bXJwZXB2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzI3NjE0MCwiZXhwIjoyMDg4ODUyMTQwfQ.iWle_HFz0GzXqBbsKmVZjeO7pUPhvZOJOtQeFAZgGOg\")",
+      "Bash(/usr/local/bin/python3 -c \"import supabase; print\\(''''ok''''\\)\")",
+      "Bash(/usr/local/bin/python3 -m pip install supabase python-dotenv httpx -q)",
+      "Bash(/usr/local/bin/python3 -c \"from supabase import create_client; print\\(''supabase ok''\\)\")",
+      "Bash(/usr/local/bin/python3 -c \"import httpx; print\\(''httpx ok'', httpx.__version__\\)\")",
+      "Bash(/usr/local/bin/python3 -m pip install python-dotenv httpx -q)",
+      "Bash(/usr/local/bin/python3 update_report.py)",
+      "Bash(SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnYnRnd3JldGV2d2h5bXJwZXB2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzI3NjE0MCwiZXhwIjoyMDg4ODUyMTQwfQ.iWle_HFz0GzXqBbsKmVZjeO7pUPhvZOJOtQeFAZgGOg BASE=https://zgbtgwretevwhymrpepv.supabase.co/rest/v1 'H1=apikey: $SERVICE_KEY' 'H2=Authorization: Bearer $SERVICE_KEY' __NEW_LINE_63d63a3d736e9f59__ echo '=== ventas ===' curl -s $BASE/ventas?select=count -H $H1 -H $H2 -H 'Prefer: count=exact' -I)",
+      "Bash(/usr/local/bin/python3 -c \":*)",
+      "Bash(npm --version)",
+      "Bash(npx create-next-app@latest dashboard --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(npm install:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(mkdir -p ~/score-dashboard)",
+      "Bash(cp -r \"/Users/agustin/Library/CloudStorage/OneDrive-uc.cl/Score/Dashboard Reportes Diarios/dashboard/.\" ~/score-dashboard/)",
+      "Read(//Users/agustin/**)",
+      "Bash(rm -rf ~/score-dashboard)",
+      "Bash(npx create-next-app@latest ~/score-dashboard --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(curl -s http://localhost:3000)"
     ]
   }
 }

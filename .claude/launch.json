@@ -1,4 +1,11 @@
 {
   "version": "0.0.1",
-  "configurations": []
+  "configurations": [
+    {
+      "name": "dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/agustin/score-dashboard"],
+      "port": 3000
+    }
+  ]
 }
